@@ -70,7 +70,7 @@ public class Cancion {
         return genero;
     }
 
-    public void setGenero(genero genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
 }

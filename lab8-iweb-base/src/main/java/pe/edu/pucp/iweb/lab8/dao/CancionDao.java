@@ -1,13 +1,12 @@
 package pe.edu.pucp.iweb.lab8.dao;
 
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import pe.edu.pucp.iweb.lab8.beans.Cancion;
 import pe.edu.pucp.iweb.lab8.beans.Genero;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+
 
 public class CancionDao extends BaseDao{ // TODO: heredar de BaseDao
 
@@ -19,9 +18,33 @@ public class CancionDao extends BaseDao{ // TODO: heredar de BaseDao
 
         ArrayList<Cancion>lista = new ArrayList<>();
 
-        String sql = "Select c.idcancion, c.titulo, g.idgenero, g.nombre FROM cancion e "
+        String sql = "Select c.idcancion, c.titulo, g.idgenero, g.nombre FROM cancion c INNER JOIN genero g ON g.idgenero = c.idcancion ";
 
-        return new ArrayList<>();
+        try(Connection conn = this.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()){
+
+            while(rs.next()){
+                Cancion cancion = new Cancion ();
+                Genero genero = new Genero ();
+
+                cancion.setIdCancion(rs.getString("idcancion"));
+                cancion.setTitulo(rs.getString("titulo"));
+
+                genero.setIdGenero(rs.getInt("genero_id"));
+                genero.setNombre(rs.getString("nombre"));
+
+                cancion.setGenero(genero);
+
+                lista.add(cancion);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return lista;
     }
 
     /**
@@ -36,20 +59,56 @@ public class CancionDao extends BaseDao{ // TODO: heredar de BaseDao
      * Ejercicio 2: INSERT de una canción nueva (PreparedStatement).
      */
     public void crear(Cancion cancion) {
-        // TODO
+
+        String sql = "INSERT INTO canciones (idcancion, titulo) VALUES (?, ?)";
+
+        try (Connection conn = this.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, cancion.getIdCancion());
+            ps.setString(2, cancion.getTitulo());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+           e.printStackTrace();
+        }
+
     }
 
     /**
      * Ejercicio 2: UPDATE de una canción existente (PreparedStatement).
      */
     public void actualizar(Cancion cancion) {
-        // TODO
+        String sql = "UPDATE jobs SET job_title = ? WHERE job_id = ?";
+
+        try (Connection conn = this.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, cancion.getIdCancion());
+            ps.setString(2, cancion.getTitulo());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
      * Ejercicio 3: DELETE por id (PreparedStatement).
      */
     public void eliminar(int idCancion) {
-        // TODO
+        String sql = "DELETE FROM jobs WHERE job_id = ?";
+
+        try (Connection conn = this.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idCancion);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
