@@ -2,6 +2,7 @@ package pe.edu.pucp.iweb.lab8.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.DriverManager;
 
 /**
  * Ejercicio 2: DAO base.
@@ -10,14 +11,22 @@ import java.sql.SQLException;
  *  - GeneroDao y CancionDao deben heredar de ella y obtener la conexión
  *    únicamente con getConnection().
  */
-public class BaseDao { // TODO: convertir en clase abstracta
 
-    private static final String URL = "jdbc:mysql://localhost:3306/melodiape";
-    private static final String USER = "root";
-    private static final String PASS = "1234568"; // cambiar por la contraseña de su MySQL
 
+public abstract class BaseDao { // TODO: convertir en clase abstracta
     public Connection getConnection() throws SQLException {
         // TODO: cargar el driver (com.mysql.cj.jdbc.Driver) y retornar la conexión
         throw new UnsupportedOperationException("getConnection() aún no implementado");
+        try{
+            Class.forName("com.mysql.cj.jdbs.Driver");
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+        String user ="root";
+        String pass ="12345678";
+        String url ="jdbc:mysql://localhost:3306/melodiape";
+        return DriverManager.getConnection(url,user,pass);
+
     }
 }
