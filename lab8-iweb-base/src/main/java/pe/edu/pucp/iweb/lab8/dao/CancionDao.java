@@ -1,17 +1,26 @@
 package pe.edu.pucp.iweb.lab8.dao;
 
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import pe.edu.pucp.iweb.lab8.beans.Cancion;
+import pe.edu.pucp.iweb.lab8.beans.Genero;
 
-public class CancionDao { // TODO: heredar de BaseDao
+public class CancionDao extends BaseDao{ // TODO: heredar de BaseDao
 
     /**
      * Ejercicio 2: todas las canciones (con el nombre de su género, JOIN),
      * ordenadas por título. Use PreparedStatement.
      */
-    public ArrayList<Cancion> listar() {
-        // TODO
+    public ArrayList<Cancion> listarCancion() {
+
+        ArrayList<Cancion>lista = new ArrayList<>();
+
+        String sql = "Select c.idcancion, c.titulo, g.idgenero, g.nombre FROM cancion e "
+
         return new ArrayList<>();
     }
 
